@@ -14,12 +14,17 @@ var options = {
   token: null
 };
 
+var appIdClient= ""
+var channelClient = ""
+var tokenClient = ""
+
 // the demo can auto join channel with params in url
 $(() => {
-  var urlParams = new URL(location.href).searchParams;
-  options.appid = urlParams.get("appid");
-  options.channel = urlParams.get("channel");
-  options.token = urlParams.get("token");
+  //var urlParams = new URL(location.href).searchParams;
+  alert("adsf")
+  options.appid = appIdClient;
+  options.channel = channelClient;
+  options.token = tokenClient;
   if (options.appid && options.channel) {
     $("#appid").val(options.appid);
     $("#token").val(options.token);
@@ -32,9 +37,9 @@ $("#join-form").submit(async function (e) {
   e.preventDefault();
   $("#join").attr("disabled", true);
   try {
-    options.appid = $("#appid").val();
-    options.token = $("#token").val();
-    options.channel = $("#channel").val();
+    options.appid = appIdClient;
+    options.channel = channelClient;
+    options.token = tokenClient;
     await join();
     if(options.token) {
       $("#success-alert-with-token").css("display", "block");
