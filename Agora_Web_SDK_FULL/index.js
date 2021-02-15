@@ -21,7 +21,7 @@ var tokenClient = ""
 // the demo can auto join channel with params in url
 $(() => {
   //var urlParams = new URL(location.href).searchParams;
-  alert("adsf")
+  webSocketConnect()
   options.appid = appIdClient;
   options.channel = channelClient;
   options.token = tokenClient;
@@ -32,6 +32,29 @@ $(() => {
     $("#join-form").submit();
   }
 })
+
+function webSocketConnect(){
+  if ("WebSocket" in window) {
+    alert("WebSocket is supported by your Browser!");
+    var ws = new WebSocket("wss://9lq9qnim7i.execute-api.ap-east-1.amazonaws.com/production");		
+    ws.onopen = function() {
+        // Web Socket is connected, send data using send()
+       // ws.send("Message to send");
+        alert("Message is sent...");
+    };
+
+    ws.onmessage = function (evt) { 
+        var received_msg = evt.data;
+       // alert("Message is received... "+ received_msg);
+    };
+
+    ws.onclose = function() { 
+        
+        // websocket is closed.
+        alert("Connection is closed..."); 
+    };
+  }
+}
 
 $("#join-form").submit(async function (e) {
   e.preventDefault();
