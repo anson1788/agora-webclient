@@ -23,30 +23,44 @@ var script = $("<script />", {
 }
 );
 
+var onclick = false
 document.addEventListener('keydown', function(event) {
+  if(onclick==true) return
+  onclick = true
   if (event.code == 'KeyW' ) {
     ws.send('{"action":"onConnected","type":"controller2"}');
     $("#up").attr('src', "arrow_d.png");
+    if(car1!=""){
+      ws.send('{"action":"directOrder","upL":"true","downL":"false","rightL":"false","leftL":"false","targetL":"'+car1+'"}');
+    }
   }
   if (event.code == 'KeyA' ) {
     $("#left").attr('src', "left_d.png");
+    ws.send('{"action":"directOrder","upL":"false","downL":"false","rightL":"false","leftL":"true","targetL":"'+car1+'"}');
   }
   if (event.code == 'KeyD' ) {
     $("#right").attr('src', "right_d.png");
+    ws.send('{"action":"directOrder","upL":"false","downL":"false","rightL":"true","leftL":"false","targetL":"'+car1+'"}');
   }
   if (event.code == 'KeyS' ) {
     $("#down").attr('src', "down_d.png");
+    ws.send('{"action":"directOrder","upL":"false","downL":"true","rightL":"false","leftL":"false","targetL":"'+car1+'"}');
+  }  
+  if (event.code == 'Enter' ) {
+    $("#start").attr('src', "start_d.jpg");
+    ws.send('{"action":"getSetup","type":"controller1"}');
   }
+
 });
 
 
 document.addEventListener('keyup', function(event) {
-
+  onclick = false
   $("#up").attr('src', "arrow.png");
   $("#left").attr('src', "left.png");
   $("#right").attr('src', "right.png");
   $("#down").attr('src', "down.png");
-
+  $("#start").attr('src', "start.jpg");
 });
 
 $("head").append(script);
@@ -69,6 +83,7 @@ $(() => {
   webSocketConnect()
 })
 var ws = null
+var car1 = ""
 function webSocketConnect(){
   if ("WebSocket" in window) {
     //alert("WebSocket is supported by your Browser!");
@@ -80,11 +95,12 @@ function webSocketConnect(){
     };
 
     ws.onmessage = function (evt) { 
-        alert("socket on")
         var received_msg = evt.data;
-        
-        
-        alert("Message is received... "+ received_msg);
+        received_msg =  received_msg.replace("Echo:","")
+        received_msg = received_msg.replaceAll("'","\"")
+        car1 = JSON.parse(received_msg).car1
+
+        //alert("Message is received... "+  car1);
     };
 
     ws.onclose = function() { 
