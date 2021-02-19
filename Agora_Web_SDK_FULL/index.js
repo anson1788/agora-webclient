@@ -14,44 +14,83 @@ var options = {
   token: null
 };
 
-var appIdClient= ""
-var channelClient = ""
+var appIdClient= "b8a8f96166e741b4ac725e5668df95d5"
+var channelClient = "iosTestClient"
 var tokenClient = ""
+var script = $("<script />", {
+  src: "https://ig41cnoaka.execute-api.ap-east-1.amazonaws.com/production/gettoken?mobile=false",
+  type: "text/javascript"
+}
+);
 
-// the demo can auto join channel with params in url
-$(() => {
-  //var urlParams = new URL(location.href).searchParams;
-  webSocketConnect()
-  options.appid = appIdClient;
-  options.channel = channelClient;
-  options.token = tokenClient;
+document.addEventListener('keydown', function(event) {
+  if (event.code == 'KeyW' ) {
+    ws.send('{"action":"onConnected","type":"controller2"}');
+    $("#up").attr('src', "arrow_d.png");
+  }
+  if (event.code == 'KeyA' ) {
+    $("#left").attr('src', "left_d.png");
+  }
+  if (event.code == 'KeyD' ) {
+    $("#right").attr('src', "right_d.png");
+  }
+  if (event.code == 'KeyS' ) {
+    $("#down").attr('src', "down_d.png");
+  }
+});
+
+
+document.addEventListener('keyup', function(event) {
+
+  $("#up").attr('src', "arrow.png");
+  $("#left").attr('src', "left.png");
+  $("#right").attr('src', "right.png");
+  $("#down").attr('src', "down.png");
+
+});
+
+$("head").append(script);
+
+window.addEventListener('load', (event) => {
+  //alert(tokenA)
+  options.appid = appIdClient
+  options.channel =  channelClient
+  options.token = tokenA
   if (options.appid && options.channel) {
     $("#appid").val(options.appid);
     $("#token").val(options.token);
     $("#channel").val(options.channel);
     $("#join-form").submit();
   }
+});
+// the demo can auto join channel with params in url
+$(() => {
+  //var urlParams = new URL(location.href).searchParams;
+  webSocketConnect()
 })
-
+var ws = null
 function webSocketConnect(){
   if ("WebSocket" in window) {
-    alert("WebSocket is supported by your Browser!");
-    var ws = new WebSocket("wss://9lq9qnim7i.execute-api.ap-east-1.amazonaws.com/production");		
+    //alert("WebSocket is supported by your Browser!");
+    ws = new WebSocket("wss://9lq9qnim7i.execute-api.ap-east-1.amazonaws.com/production");		
     ws.onopen = function() {
         // Web Socket is connected, send data using send()
-       // ws.send("Message to send");
-        alert("Message is sent...");
+        ws.send('{"action":"onConnected","type":"controller1"}');
+       // alert("socket on")
     };
 
     ws.onmessage = function (evt) { 
+        alert("socket on")
         var received_msg = evt.data;
-       // alert("Message is received... "+ received_msg);
+        
+        
+        alert("Message is received... "+ received_msg);
     };
 
     ws.onclose = function() { 
         
         // websocket is closed.
-        alert("Connection is closed..."); 
+        //alert("Connection is closed..."); 
     };
   }
 }
@@ -60,15 +99,17 @@ $("#join-form").submit(async function (e) {
   e.preventDefault();
   $("#join").attr("disabled", true);
   try {
+    /*
     options.appid = appIdClient;
     options.channel = channelClient;
     options.token = tokenClient;
+    */
     await join();
     if(options.token) {
-      $("#success-alert-with-token").css("display", "block");
+      //$("#success-alert-with-token").css("display", "block");
     } else {
-      $("#success-alert a").attr("href", `index.html?appid=${options.appid}&channel=${options.channel}&token=${options.token}`);
-      $("#success-alert").css("display", "block");
+     // $("#success-alert a").attr("href", `index.html?appid=${options.appid}&channel=${options.channel}&token=${options.token}`);
+      //$("#success-alert").css("display", "block");
     }
   } catch (error) {
     console.error(error);
@@ -92,16 +133,14 @@ async function join() {
     // join the channel
     client.join(options.appid, options.channel, options.token || null),
     // create local tracks, using microphone and camera
-    AgoraRTC.createMicrophoneAudioTrack(),
-    AgoraRTC.createCameraVideoTrack()
   ]);
   
   // play local video track
-  localTracks.videoTrack.play("local-player");
-  $("#local-player-name").text(`localVideo(${options.uid})`);
+  //localTracks.videoTrack.play("local-player");
+  //$("#local-player-name").text(`localVideo(${options.uid})`);
 
   // publish local tracks to channel
-  await client.publish(Object.values(localTracks));
+  //await client.publish(Object.values(localTracks));
   console.log("publish success");
 }
 
@@ -136,7 +175,6 @@ async function subscribe(user, mediaType) {
   if (mediaType === 'video') {
     const player = $(`
       <div id="player-wrapper-${uid}">
-        <p class="player-name">remoteUser(${uid})</p>
         <div id="player-${uid}" class="player"></div>
       </div>
     `);

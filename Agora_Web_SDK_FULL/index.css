@@ -30,21 +30,38 @@ input {
 }
 
 .player {
-  width: 480px;
+  width: 693px;
   height: 320px;
+  margin: auto;
 }
 
 .player-name {
-  margin: 8px 0;
+  margin: 0px 0;
 }
 
 #success-alert, #success-alert-with-token {
   display: none;
 }
 
+.container, .container-sm {
+  max-width: 100%;
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+#overlay {
+  position: absolute; /* Sit on top of the page content */
+  width: 693px;
+  height: 320px;
+  margin: auto;
+   left:50%; transform:translate(-50%, 0);
+}
+
 @media (max-width: 640px) {
   .player {
-    width: 320px;
-    height: 240px;
+    width: 693px;
+    height: 320px;
+    margin: auto;
   }
 }
+

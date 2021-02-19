@@ -1,0 +1,13 @@
+{"action":"onConnected","type":"controller1"}
+{"action":"onConnected","type":"car1"}
+
+{"action":"directOrder","upL":"false","downL":"falseL","rightL":"false","leftL":"false", "targetL":""}
+
+{"action":"getSetup"}
+
+
+
+
+Token With Integer Number Uid: 006b8a8f96166e741b4ac725e5668df95d5IAD7irN4G1Jhu2so7LL+ijEakST6Yw39ftht1VdbTEWoge1xzVZXoFHlIgB1jcqWF+ovYAQAAQCnpi5gAgCnpi5gAwCnpi5gBACnpi5g
+
+Token With UserAccount: 006b8a8f96166e741b4ac725e5668df95d5IAD7irN4G1Jhu2so7LL+ijEakST6Yw39ftht1VdbTEWoge1xzVZXoFHlIgB1jcqWF+ovYAQAAQCnpi5gAgCnpi5gAwCnpi5gBACnpi5g
