@@ -24,13 +24,16 @@ var script = $("<script />", {
 );
 
 var onclick = false
-document.addEventListener('keydown', function(event) {
-  if(onclick==true) return
-  onclick = true
+
+
+document.addEventListener('keypress', function(event) {
+  if (event.repeat) { return }
+  console.log("pressing")
   if (event.code == 'KeyW' ) {
     ws.send('{"action":"onConnected","type":"controller2"}');
     $("#up").attr('src', "arrow_d.png");
     if(car1!=""){
+    
       ws.send('{"action":"directOrder","upL":"true","downL":"false","rightL":"false","leftL":"false","targetL":"'+car1+'"}');
     }
   }
@@ -55,7 +58,7 @@ document.addEventListener('keydown', function(event) {
 
 
 document.addEventListener('keyup', function(event) {
-  onclick = false
+  if (event.repeat) { return }
   $("#up").attr('src', "arrow.png");
   $("#left").attr('src', "left.png");
   $("#right").attr('src', "right.png");
