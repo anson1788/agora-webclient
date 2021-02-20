@@ -25,12 +25,41 @@ var script = $("<script />", {
 
 var onclick = false
 
-
+document.onkeydown = function(event) {
+  if (event.repeat) { return }
+  console.log("aa "+  Date.now() + " "+event.code)
+  
+  if (event.code == 'KeyW' ) {
+    ws.send('{"action":"onConnected","type":"controller1"}');
+    $("#up").attr('src', "arrow_d.png");
+    if(car1!=""){
+    
+      ws.send('{"action":"directOrder","upL":"true","downL":"false","rightL":"false","leftL":"false","targetL":"'+car1+'"}');
+    }
+  }
+  if (event.code == 'KeyA' ) {
+    $("#left").attr('src', "left_d.png");
+    ws.send('{"action":"directOrder","upL":"false","downL":"false","rightL":"false","leftL":"true","targetL":"'+car1+'"}');
+  }
+  if (event.code == 'KeyD' ) {
+    $("#right").attr('src', "right_d.png");
+    ws.send('{"action":"directOrder","upL":"false","downL":"false","rightL":"true","leftL":"false","targetL":"'+car1+'"}');
+  }
+  if (event.code == 'KeyS' ) {
+    $("#down").attr('src', "down_d.png");
+    ws.send('{"action":"directOrder","upL":"false","downL":"true","rightL":"false","leftL":"false","targetL":"'+car1+'"}');
+  }  
+  if (event.code == 'Enter' ) {
+    $("#start").attr('src', "start_d.jpg");
+    ws.send('{"action":"getSetup","type":"controller1"}');
+  }
+}
+/*
 document.addEventListener('keypress', function(event) {
   if (event.repeat) { return }
-  console.log("pressing")
+
   if (event.code == 'KeyW' ) {
-    ws.send('{"action":"onConnected","type":"controller2"}');
+    ws.send('{"action":"onConnected","type":"controller1"}');
     $("#up").attr('src', "arrow_d.png");
     if(car1!=""){
     
@@ -55,15 +84,18 @@ document.addEventListener('keypress', function(event) {
   }
 
 });
+*/
 
 
 document.addEventListener('keyup', function(event) {
   if (event.repeat) { return }
+  console.log("key release " + Date.now())
   $("#up").attr('src', "arrow.png");
   $("#left").attr('src', "left.png");
   $("#right").attr('src', "right.png");
   $("#down").attr('src', "down.png");
   $("#start").attr('src', "start.jpg");
+  ws.send('{"action":"directOrder","upL":"false","downL":"false","rightL":"false","leftL":"false","targetL":"'+car1+'"}');
 });
 
 $("head").append(script);
